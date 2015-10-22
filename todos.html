@@ -28,13 +28,13 @@
 </body>
 
 <template name="main">
-  
+  {{#if currentUser}}
   <form action="" class="new-todo">
     <div class="form-group">
       <input type="text" name="text" class="form-control" placeholder="Add a new Todo">
     </div>
   </form>
-
+  {{/if}}
   <ul>
     {{#each todos}}
       <li class="{{#if checked}}checked{{/if}}">

@@ -16,7 +16,9 @@ if (Meteor.isClient) {
 
       Todos.insert({
         text: text,
-        createdAt: new Date()
+        createdAt: new Date(),
+        userID: Meteor.userId(),
+        username: Meteor.user().username
       });
 
       // Clear Form
