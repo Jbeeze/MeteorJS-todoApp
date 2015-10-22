@@ -38,13 +38,17 @@ if (Meteor.isClient) {
 
   Accounts.ui.config({
     passwordSignupFields: "USERNAME_ONLY"
-  })
+  });
 
 }
 
 if (Meteor.isServer) {
   Meteor.publish('todos', function(){
-    return Todos.find();
+    if(!this.userId){
+      return Todos.find();
+    } else{  
+      return Todos.find({userId: this.userId});
+    }
   });
 }
 
@@ -64,10 +68,18 @@ Meteor.methods({
   },
   
   deleteTodo: function(todoId){
+    var todo = Todos.findOne(todoId);
+    if(todo.userId !== Meteor.userId()){
+      throw new Meteor.Error('not-authorized');
+    }
     Todos.remove(todoId);
   },
 
   setChecked: function(todoId, setChecked){
+    var todo = Todos.findOne(todoId);
+    if(todo.userId !== Meteor.userId()){
+      throw new Meteor.Error('not-authorized');
+    }
     Todos.update(todoId, {$set: {checked: setChecked}});
   }
 
