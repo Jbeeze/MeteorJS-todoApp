@@ -1,6 +1,8 @@
 Todos = new Mongo.Collection('todos');
 
 if (Meteor.isClient) {
+  Meteor.subscribe('todos');
+
   // Template Helpers
   Template.main.helpers({
     todos: function(){
@@ -41,7 +43,9 @@ if (Meteor.isClient) {
 }
 
 if (Meteor.isServer) {
-
+  Meteor.publish('todos', function(){
+    return Todos.find();
+  });
 }
 
 //Meteor Methods
